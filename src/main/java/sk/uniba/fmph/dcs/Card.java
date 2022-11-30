@@ -1,13 +1,14 @@
 package sk.uniba.fmph.dcs;
 
 public class Card {
-    // public String name;
-    // public String description;
-    // public int cost;
 
     public CardType type;
     public int value;
-
+    
+    // public String name;
+    // public String description;
+    // public int cost;
+    
     // @Override
     // public int hashCode() {
     //     final int prime = 31;
