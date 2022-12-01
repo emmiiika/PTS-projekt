@@ -1,19 +1,46 @@
 package sk.uniba.fmph.dcs;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class QueenCollection {
-    
-    public QueenCollection(){}
 
-    public void addQueen(Queen queen){}
+    private List<Queen> queens;
+    
+    public QueenCollection(){
+        this.queens = new ArrayList<>(12);
+    }
+
+    public void addQueen(Queen queen){
+        queens.add(queen);
+    }
 
     public Optional<Queen> removeQueen(SleepingQueenPosition position){
-        return null;
+        int index = position.getCardIndex();
+        Optional<Queen> optional;
+        if(index < queens.size()){
+            Queen queen = queens.remove(index);
+            optional = Optional.of(queen);
+        }
+        else{
+            optional = Optional.empty();
+        }
+
+        return optional;
     }
 
     public Map<Position, Queen> getQueens(){
-        return null;
+        Map<Position, Queen> queensPositions = new HashMap<>();
+
+        for(int i=0; i<queens.size(); i++){
+            
+            //treba spravit zmenu indexu na position
+            queensPositions.put(null, queens.get(i));
+        }
+
+        return queensPositions;
     }
 }
