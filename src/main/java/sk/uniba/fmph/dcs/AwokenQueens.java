@@ -1,6 +1,17 @@
 package sk.uniba.fmph.dcs;
 
-public class AwokenQueens {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AwokenQueens extends QueenCollection{
     
-    public AwokenQueens(){}
+    private List<Queen> awokenQueens;
+
+    public AwokenQueens(){
+        awokenQueens = new ArrayList<>();
+    }
+
+    public int getCount(){
+        return awokenQueens.size();
+    }
 }

@@ -26,7 +26,7 @@ public class EvaluateAttack {
         }
         
         // uspesny attack
-        MoveQueen moveQueen = new MoveQueen(targetQueen, defenseCardType, attacker, defender);
+        MoveQueen moveQueen = new MoveQueen(defenseCardType, attacker, defender);
         moveQueen.play(targetQueen);
         return true;
     }

@@ -32,13 +32,16 @@ public class QueenCollection {
         return optional;
     }
 
+
+    // tu nie je nejak doriesene to, ze chcem pozicie vsetkych kralovien,
+    // nie len spiacich
+
     public Map<Position, Queen> getQueens(){
         Map<Position, Queen> queensPositions = new HashMap<>();
 
         for(int i=0; i<queens.size(); i++){
-            
-            //treba spravit zmenu indexu na position
-            queensPositions.put(null, queens.get(i));
+            Position position = new Position(new SleepingQueenPosition(i));
+            queensPositions.put(position, queens.get(i));
         }
 
         return queensPositions;
