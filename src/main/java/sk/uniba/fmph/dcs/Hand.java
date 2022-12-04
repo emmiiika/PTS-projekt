@@ -13,7 +13,8 @@ public class Hand {
     private List<Card> cardsOnHand;
     private List<Card> pickedCards;
 
-    public Hand(){
+    public Hand(int playerIdx){
+        this.playerIdx = playerIdx;
         cardsOnHand = new ArrayList<>();
         pickedCards = new ArrayList<>();
     }
@@ -67,6 +68,10 @@ public class Hand {
 
     public List<Card> getCards(){
         return cardsOnHand;
+    }
+
+    public int getPlayerIndex(){
+        return playerIdx;
     }
 
 }

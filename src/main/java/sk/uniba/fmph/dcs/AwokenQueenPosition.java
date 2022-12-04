@@ -3,11 +3,11 @@ package sk.uniba.fmph.dcs;
 public class AwokenQueenPosition {
     
     private int cardIndex;
-    private int playerIndex;
+    private int playerIdx;
 
-    public AwokenQueenPosition(int playerIndex, int cardIndex){
-        this.playerIndex = playerIndex;
+    public AwokenQueenPosition(int cardIndex, int playerIdx){
         this.cardIndex = cardIndex;
+        this.playerIdx = playerIdx;
     }
     
     public int getCardIndex(){
@@ -15,6 +15,6 @@ public class AwokenQueenPosition {
     }
 
     public int getPlayerIndex(){
-        return playerIndex;
+        return playerIdx;
     }
 }

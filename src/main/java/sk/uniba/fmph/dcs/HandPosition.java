@@ -2,11 +2,11 @@ package sk.uniba.fmph.dcs;
 
 public class HandPosition {
     private int cardIndex;
-    private int playerIndex;
+    private int playerIdx;
 
-    public HandPosition(int cardIndex, int playerIndex){
+    public HandPosition(int cardIndex, int playerIdx){
         this.cardIndex = cardIndex;
-        this.playerIndex = playerIndex;
+        this.playerIdx = playerIdx;
     }
 
     public int getCardIndex(){
@@ -14,6 +14,6 @@ public class HandPosition {
     }
 
     public int getPlayerIndex(){
-        return playerIndex;
+        return playerIdx;
     }
 }
