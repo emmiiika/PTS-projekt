@@ -10,15 +10,35 @@ public class Player {
     private int playerIdx;
     private Hand playersHand;
     private AwokenQueens awokenQueens;
+    private Game game;
 
-    public Player(int playerIdx){
+    public Player(int playerIdx, Game game){
         this.playerIdx = playerIdx;
-        playersHand = new Hand(playerIdx);
+        this.playersHand = new Hand(playerIdx, game.getdrawingAndTrashPile());
         this.awokenQueens = new AwokenQueens(playerIdx);
+        this.game = game;
     }
 
-    public void play(List<Position> cards){
-    
+    public void play(List<HandPosition> cards){
+        Optional<List<Card>> pickedCards = playersHand.pickCards(cards);
+
+        if(pickedCards.isPresent()){
+            List<Card> pickedCardsList = pickedCards.get();
+            if(playersHand.areAllNumbered(pickedCardsList)){
+                EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
+                boolean success = evaluateNumberedCards.play(pickedCardsList);
+
+                if(success){
+                        playersHand.removePickedCardsAndRedraw();
+                }
+                else {
+                    playersHand.returnPickedCards();
+                }
+            }
+            else{
+                EvaluateAttack evaluateAttack = new EvaluateAttack(game);
+            }
+        }
     }
 
     public PlayerState getPlayerState(){
@@ -45,5 +65,9 @@ public class Player {
     }
     public int getPlayerIdx(){
         return playerIdx;
+    }
+
+    public AwokenQueens getAwokenQueens() {
+        return awokenQueens;
     }
 }

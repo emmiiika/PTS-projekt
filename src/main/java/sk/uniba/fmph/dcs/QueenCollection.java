@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface QueenCollection {
     public void addQueen(Queen queen);
     public Optional<Queen> removeQueen(SleepingQueenPosition position);
+    public Optional<Queen> removeQueen(AwokenQueenPosition position);
     public Map<Position, Queen> getQueens();
 }

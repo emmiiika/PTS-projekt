@@ -4,9 +4,11 @@ package sk.uniba.fmph.dcs;
 import java.util.*;
 
 public class AwokenQueens implements QueenCollection{
+    private int playerIdx;
     private List<Queen> awokenQueens;
 
-    public AwokenQueens(){
+    public AwokenQueens(int playerIdx){
+        this.playerIdx = playerIdx;
         this.awokenQueens = new ArrayList<>();
     }
 
@@ -17,6 +19,11 @@ public class AwokenQueens implements QueenCollection{
 
     @Override
     public Optional<Queen> removeQueen(SleepingQueenPosition position) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Queen> removeQueen(AwokenQueenPosition position) {
         int index = position.getCardIndex();
         Optional<Queen> optional;
 
@@ -36,7 +43,7 @@ public class AwokenQueens implements QueenCollection{
         Map<Position, Queen> queensPositions = new HashMap<>();
 
         for(int i=0; i<awokenQueens.size(); i++){
-            Position position = new Position(new AwokenQueenPosition(i, ));
+            Position position = new Position(new AwokenQueenPosition(i, playerIdx));
             queensPositions.put(position, awokenQueens.get(i));
         }
 

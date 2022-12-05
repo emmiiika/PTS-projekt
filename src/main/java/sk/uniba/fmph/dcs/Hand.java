@@ -12,11 +12,13 @@ public class Hand {
 
     private List<Card> cardsOnHand;
     private List<Card> pickedCards;
+    private DrawingAndTrashPile drawingAndTrashPile;
 
-    public Hand(int playerIdx){
+    public Hand(int playerIdx, DrawingAndTrashPile drawingAndTrashPile){
         this.playerIdx = playerIdx;
-        cardsOnHand = new ArrayList<>();
-        pickedCards = new ArrayList<>();
+        this.cardsOnHand = new ArrayList<>();
+        this.pickedCards = new ArrayList<>();
+        this.drawingAndTrashPile = drawingAndTrashPile;
     }
     
     public Optional<List<Card>> pickCards(List<HandPosition> positions){
@@ -32,8 +34,6 @@ public class Hand {
     }
 
     public Map<HandPosition, Card> removePickedCardsAndRedraw(){
-        DrawingAndTrashPile drawingAndTrashPile = new DrawingAndTrashPile();
-        
         cardsOnHand.removeAll(pickedCards);
 
         List<Card> newCards = drawingAndTrashPile.discardAndDraw(pickedCards);
@@ -72,6 +72,15 @@ public class Hand {
 
     public int getPlayerIndex(){
         return playerIdx;
+    }
+
+    public boolean areAllNumbered(List<Card> cards){
+        for(Card card: cards){
+            if(card.type != CardType.NUMBER){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

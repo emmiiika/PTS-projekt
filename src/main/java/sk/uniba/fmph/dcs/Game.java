@@ -1,9 +1,8 @@
 package sk.uniba.fmph.dcs;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
+
+import java.util.*;
 
 public class Game {
 
@@ -23,10 +22,43 @@ public class Game {
         GameState gameState = new GameState();
         gameState.numberOfPlayers = playerList.size();
         gameState.onTurn = onTurn;
-//        gameState.sleepingQueens =
-//        gameState.cards = playerList.get(onTurn).getPlayersCards()
-//        gameState.awokenQueens =
-//        gameState.cardsDiscardedLastTurn = dAndTPile.getCardsDiscardedThisTurn();
+
+        Set<SleepingQueenPosition> sleepingQueenPositions = new HashSet<>();
+        Map<Position, Queen> sleepingQueensMap = sleepingQueens.getQueens();
+        sleepingQueensMap.forEach((position, queen) -> {
+            if(position.getSleepingQueenPosition().isPresent()){
+                SleepingQueenPosition sQP = position.getSleepingQueenPosition().get();
+                sleepingQueenPositions.add(sQP);
+            }
+        });
+        gameState.sleepingQueens = sleepingQueenPositions;
+
+        Map<HandPosition, Optional<Card>> cardsMap = new HashMap<>();
+        playerList.forEach(player -> {
+            List<Card> playersCards = player.getPlayersCards();
+           for(int i=0; i<playersCards.size(); i++){
+               HandPosition handPosition = new HandPosition(i, player.getPlayerIdx());
+               cardsMap.put(handPosition, Optional.of(playersCards.get(i)));
+           }
+        });
+        gameState.cards = cardsMap;
+
+        Map<AwokenQueenPosition, Queen> awokenQueenPositions = new HashMap<>();
+        playerList.forEach(player -> {
+            AwokenQueens aQPlayer = player.getAwokenQueens();
+            Map<Position, Queen> awokenQueensMap = aQPlayer.getQueens();
+            awokenQueensMap.forEach((position, queen) -> {
+                if(position.getAwokenQueenPosition().isPresent()){
+                    AwokenQueenPosition aQP = position.getAwokenQueenPosition().get();
+                    awokenQueenPositions.put(aQP, queen);
+                }
+            });
+        });
+
+        gameState.awokenQueens = awokenQueenPositions;
+
+        // nie som si tymto ista
+        gameState.cardsDiscardedLastTurn = dAndTPile.getCardsDiscardedThisTurn();
 
 
         return Optional.of(gameState);
@@ -38,5 +70,12 @@ public class Game {
 
     public int playerOnTurn(){
         return onTurn;
+    }
+    public SleepingQueens getSleepingQueens(){
+        return sleepingQueens;
+    }
+
+    public DrawingAndTrashPile getdrawingAndTrashPile() {
+        return dAndTPile;
     }
 }

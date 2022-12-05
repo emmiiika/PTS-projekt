@@ -3,38 +3,45 @@ package sk.uniba.fmph.dcs;
 import java.util.Optional;
 
 public class MoveQueen{
-
-    private int attackerIdx;
-    private int defenderIdx;
     private CardType actionBasedOf;
-    private AwokenQueens awokenQueens;
+    private AwokenQueens attackersAwokenQueens;
+    private AwokenQueens defendersAwokenQueens;
     private SleepingQueens sleepingQueens;
 
-    public MoveQueen(CardType defenseCardType, int attackerIdx, int defenderIdx, AwokenQueens awokenQueens, SleepingQueens sleepingQueens ){
-        this.attackerIdx = attackerIdx;
-        this.defenderIdx = defenderIdx;
+    public MoveQueen(CardType defenseCardType, AwokenQueens atttackersAwokenQueens, AwokenQueens defendersAwokenQueens, SleepingQueens sleepingQueens ){
         this.actionBasedOf = defenseCardType;
-        this.awokenQueens = awokenQueens;
+        this.attackersAwokenQueens = atttackersAwokenQueens;
+        this.defendersAwokenQueens = defendersAwokenQueens;
         this.sleepingQueens = sleepingQueens;
     }
     
-    public boolean play(Position targetQueen){
-        switch(actionBasedOf){
+    public boolean play(Position targetQueen) {
+        switch (actionBasedOf) {
             case DRAGON:
                 if (targetQueen.getAwokenQueenPosition().isPresent()) {
-                    AwokenQueenPosition cardIndex = targetQueen.getAwokenQueenPosition().get();
-
+                    AwokenQueenPosition targetQueenPosition = targetQueen.getAwokenQueenPosition().get();
+                    Optional<Queen> queen = defendersAwokenQueens.removeQueen(targetQueenPosition);
+                    if (queen.isPresent()) {
+                        attackersAwokenQueens.addQueen(queen.get());
+                        return true;
+                    }
                 }
-
                 return false;
-        
+
             case MAGICWAND:
-                return true;
-            
+                if (targetQueen.getAwokenQueenPosition().isPresent()) {
+                    AwokenQueenPosition targetQueenPosition = targetQueen.getAwokenQueenPosition().get();
+                    Optional<Queen> queen = defendersAwokenQueens.removeQueen(targetQueenPosition);
+                    if (queen.isPresent()) {
+                        sleepingQueens.addQueen(queen.get());
+                        return true;
+                    }
+                }
+                return false;
+
             default:
-                break;
+                return false;
         }
-        return false;
     }
 }
 

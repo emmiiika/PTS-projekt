@@ -32,6 +32,11 @@ public class SleepingQueens implements QueenCollection{
     }
 
     @Override
+    public Optional<Queen> removeQueen(AwokenQueenPosition position) {
+        return Optional.empty();
+    }
+
+    @Override
     public Map<Position, Queen> getQueens() {
         Map<Position, Queen> queensPositions = new HashMap<>();
 
