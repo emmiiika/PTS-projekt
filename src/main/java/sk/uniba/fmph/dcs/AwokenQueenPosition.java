@@ -2,16 +2,16 @@ package sk.uniba.fmph.dcs;
 
 public class AwokenQueenPosition {
     
-    private int cardIndex;
+    private int cardIdx;
     private int playerIdx;
 
-    public AwokenQueenPosition(int cardIndex, int playerIdx){
-        this.cardIndex = cardIndex;
+    public AwokenQueenPosition(int cardIdx, int playerIdx){
+        this.cardIdx = cardIdx;
         this.playerIdx = playerIdx;
     }
     
     public int getCardIndex(){
-        return cardIndex;
+        return cardIdx;
     }
 
     public int getPlayerIndex(){

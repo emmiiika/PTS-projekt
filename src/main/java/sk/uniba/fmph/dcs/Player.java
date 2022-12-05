@@ -4,20 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 public class Player {
 
     private int playerIdx;
     private Hand playersHand;
     private AwokenQueens awokenQueens;
-    private Game game;
 
-    public Player(){
+    public Player(int playerIdx){
+        this.playerIdx = playerIdx;
         playersHand = new Hand(playerIdx);
+        this.awokenQueens = new AwokenQueens(playerIdx);
     }
 
-    public void play(List<Position> cards){}
+    public void play(List<Position> cards){
+    
+    }
 
     public PlayerState getPlayerState(){
         List<Card> cards = playersHand.getCards();
@@ -41,8 +43,7 @@ public class Player {
     public List<Card> getPlayersCards(){
         return playersHand.getCards();
     }
-
-    public AwokenQueens getPlayersAwokenQueens(){
-        return awokenQueens;
+    public int getPlayerIdx(){
+        return playerIdx;
     }
 }
