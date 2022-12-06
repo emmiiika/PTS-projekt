@@ -9,10 +9,10 @@ public class Game {
     private SleepingQueens sleepingQueens;
     private int onTurn;
 
-    public Game(DrawingAndTrashPile dAndTPile, SleepingQueens sleepingQueens){
+    public Game(DrawingAndTrashPile dAndTPile){
         this.playerList = playerList;
         this.dAndTPile = dAndTPile;
-        this.sleepingQueens = sleepingQueens;
+        this.sleepingQueens = new SleepingQueens();
         this.onTurn = 0;
     }
 
@@ -32,7 +32,7 @@ public class Game {
         gameState.sleepingQueens = sleepingQueenPositions;
 
         Map<HandPosition, Optional<Card>> cardsMap = new HashMap<>();
-        Player player = new Player(playerIdx, this);
+        Player player = playerList.get(playerIdx);
 
         List<Card> playersCards = player.getPlayersCards();
         for(int i=0; i<playersCards.size(); i++){
@@ -76,5 +76,9 @@ public class Game {
 
     public DrawingAndTrashPile getdrawingAndTrashPile() {
         return dAndTPile;
+    }
+
+    public Optional<Integer> isFinished(GameFinishedStrategy gameFinishedStrategy){
+        return gameFinishedStrategy.isFinished();
     }
 }

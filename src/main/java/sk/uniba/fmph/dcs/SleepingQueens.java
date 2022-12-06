@@ -8,6 +8,23 @@ public class SleepingQueens implements QueenCollection{
 
     public SleepingQueens(){
         this.sleepingQueens = new ArrayList<>();
+        for(int i=0; i<4; i++){
+            Queen queen = new Queen(5);
+            this.sleepingQueens.add(queen);
+            queen = new Queen(10);
+            this.sleepingQueens.add(queen);
+
+            if(i == 0){
+                queen = new Queen(20);
+                this.sleepingQueens.add(queen);
+            }
+            else{
+                queen = new Queen(15);
+                this.sleepingQueens.add(queen);
+            }
+        }
+
+        Collections.shuffle(sleepingQueens);
     }
 
     @Override

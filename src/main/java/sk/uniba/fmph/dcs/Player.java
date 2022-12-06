@@ -15,6 +15,7 @@ public class Player implements GameObserver{
     public Player(int playerIdx, Game game){
         this.playerIdx = playerIdx;
         this.playersHand = new Hand(playerIdx, game.getdrawingAndTrashPile());
+        this.awokenQueens = new AwokenQueens(playerIdx);
         this.game = game;
     }
 
