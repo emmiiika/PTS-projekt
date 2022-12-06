@@ -1,5 +1,6 @@
 package sk.uniba.fmph.dcs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EvaluateAttack {
@@ -23,6 +24,10 @@ public class EvaluateAttack {
         for(Card card: playersCards){
             if(card.type == defenseCardType){
                 // neuspesny attack
+                DrawingAndTrashPile drawingAndTrashPile = game.getdrawingAndTrashPile();
+                List<Card> discard = new ArrayList<>();
+                discard.add(card);
+                drawingAndTrashPile.discardAndDraw(discard);
                 return false;
             }
         }

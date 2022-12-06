@@ -16,7 +16,7 @@ public class Hand {
 
     public Hand(int playerIdx, DrawingAndTrashPile drawingAndTrashPile){
         this.playerIdx = playerIdx;
-        this.cardsOnHand = new ArrayList<>();
+        this.cardsOnHand = drawingAndTrashPile.dealCards();
         this.pickedCards = new ArrayList<>();
         this.drawingAndTrashPile = drawingAndTrashPile;
     }
@@ -35,12 +35,13 @@ public class Hand {
 
     public Map<HandPosition, Card> removePickedCardsAndRedraw(){
         cardsOnHand.removeAll(pickedCards);
+        int n = pickedCards.size();
 
         List<Card> newCards = drawingAndTrashPile.discardAndDraw(pickedCards);
         cardsOnHand.addAll(newCards);
 
         Map<HandPosition, Card> cardOnPosition = new HashMap<>();
-        for(int i=0; i<cardsOnHand.size(); i++){
+        for(int i=0; i<n; i++){
             HandPosition handPosition = new HandPosition(i, playerIdx);
             cardOnPosition.put(handPosition, cardsOnHand.get(i));
         }
@@ -68,10 +69,6 @@ public class Hand {
 
     public List<Card> getCards(){
         return cardsOnHand;
-    }
-
-    public int getPlayerIndex(){
-        return playerIdx;
     }
 
     public boolean areAllNumbered(List<Card> cards){

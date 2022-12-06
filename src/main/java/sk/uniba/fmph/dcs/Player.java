@@ -34,8 +34,11 @@ public class Player {
                 else {
                     playersHand.returnPickedCards();
                 }
-            }
-            else{
+            } else if (pickedCards.get().get(0).type == CardType.KING) {
+                SleepingQueens sleepingQueens = game.getSleepingQueens();
+            } else{
+                DrawingAndTrashPile drawingAndTrashPile = game.getdrawingAndTrashPile();
+                drawingAndTrashPile.discardAndDraw(pickedCardsList);
                 EvaluateAttack evaluateAttack = new EvaluateAttack(game);
             }
         }

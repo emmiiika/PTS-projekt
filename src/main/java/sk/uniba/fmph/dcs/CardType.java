@@ -4,7 +4,7 @@ public enum CardType {
     NUMBER,
     KING,
     KNIGHT,
-    SLLEPINGPOTION,
+    SLEEPINGPOTION,
     DRAGON,
     MAGICWAND
 }

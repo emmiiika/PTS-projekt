@@ -1,7 +1,5 @@
 package sk.uniba.fmph.dcs;
 
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
-
 import java.util.*;
 
 public class Game {
@@ -11,7 +9,7 @@ public class Game {
     private SleepingQueens sleepingQueens;
     private int onTurn;
 
-    public Game(List<Player> playerList, DrawingAndTrashPile dAndTPile, SleepingQueens sleepingQueens){
+    public Game(DrawingAndTrashPile dAndTPile, SleepingQueens sleepingQueens){
         this.playerList = playerList;
         this.dAndTPile = dAndTPile;
         this.sleepingQueens = sleepingQueens;
@@ -66,6 +64,9 @@ public class Game {
 
     public List<Player> getPlayersList(){
         return playerList;
+    }
+    public void setPlayerList(List<Player> playerList){
+        this.playerList = playerList;
     }
 
     public int playerOnTurn(){
