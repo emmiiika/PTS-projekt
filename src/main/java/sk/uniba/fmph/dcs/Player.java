@@ -15,7 +15,6 @@ public class Player {
     public Player(int playerIdx, Game game){
         this.playerIdx = playerIdx;
         this.playersHand = new Hand(playerIdx, game.getdrawingAndTrashPile());
-        this.awokenQueens = new AwokenQueens(playerIdx);
         this.game = game;
     }
 
@@ -72,5 +71,9 @@ public class Player {
 
     public AwokenQueens getAwokenQueens() {
         return awokenQueens;
+    }
+
+    public void setAwokenQueens(AwokenQueens awokenQueens) {
+        this.awokenQueens = awokenQueens;
     }
 }
