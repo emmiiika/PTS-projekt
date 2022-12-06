@@ -6,11 +6,13 @@ public class DrawingAndTrashPile {
 
     private Stack<Card> trashPile;
     private Stack<Card> drawPile;
+    private final DrawingPileType drawingPileType;
     private List<Card> discardedCardsInTurn;
  
-    public DrawingAndTrashPile(){
+    public DrawingAndTrashPile(DrawingPileType drawingPileType){
         this.trashPile = new Stack<>();
         this.drawPile = new Stack<>();
+        this.drawingPileType = drawingPileType;
 
         Map<CardType, Integer> cardCounts = new HashMap<>();
         cardCounts.put(CardType.KING, 8);
@@ -39,16 +41,7 @@ public class DrawingAndTrashPile {
     }
 
     public List<Card> discardAndDraw(List<Card> discard){
-        trashPile.addAll(discard);
-        discardedCardsInTurn.addAll(discard);
-
-        List<Card> cards = new ArrayList<>();
-        int n = discard.size();
-        for(int i=0; i<n; i++){
-            cards.add(drawPile.pop());
-        }
-
-        return cards;
+        return drawingPileType.deal(this, discard);
     }
 
     public void newTurn(){
@@ -65,5 +58,25 @@ public class DrawingAndTrashPile {
             cards.add(drawPile.pop());
         }
         return cards;
+    }
+    public int getRemainingCardsCount(){
+        return drawPile.size();
+    }
+    public Card drawOne(){
+        return drawPile.pop();
+    }
+    public Stack<Card> getDrawPile() {
+        return drawPile;
+    }
+    public Stack<Card> getTrashPile() {
+        return trashPile;
+    }
+
+    public void setDrawPile(Stack<Card> drawPile) {
+        this.drawPile = drawPile;
+    }
+
+    public void setTrashPile(Stack<Card> trashPile) {
+        this.trashPile = trashPile;
     }
 }

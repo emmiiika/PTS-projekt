@@ -1,14 +1,37 @@
 package sk.uniba.fmph.dcs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameObservable {
 
-    public GameObservable(){}
-    
-    public void add(GameObserver observer){}
+    private List<GameObserver> observers;
+    private List<Integer> players;
 
-    public void addPlayer(int playerIdx, GameObserver observer){}
 
-    public void remove(GameObserver observer){}
+    public GameObservable(){
+        this.players = new ArrayList<>();
+        this.observers = new ArrayList<>();
+    }
 
-    public void notifyAll(GameState message){}
+
+    public void add(GameObserver observer){
+        observers.add(observer);
+    }
+
+    public void addPlayer(int playerIdx, GameObserver observer){
+        players.add(playerIdx);
+        observers.add(observer);
+
+    }
+
+    public void remove(GameObserver observer){
+        observers.remove(observer);
+    }
+
+    public void notifyAll(GameState message){
+        for(GameObserver observer: observers){
+            observer.notify(message);
+        }
+    }
 }

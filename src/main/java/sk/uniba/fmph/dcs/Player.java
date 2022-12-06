@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class Player {
+public class Player implements GameObserver{
 
     private int playerIdx;
     private Hand playersHand;
@@ -35,6 +35,13 @@ public class Player {
                 }
             } else if (pickedCards.get().get(0).type == CardType.KING) {
                 SleepingQueens sleepingQueens = game.getSleepingQueens();
+                Map<Position, Queen> sq = sleepingQueens.getQueens();
+                Position position = sq.keySet().iterator().next();
+
+                if(position.getSleepingQueenPosition().isPresent()) {
+                    Optional<Queen> awokenQueen = sleepingQueens.removeQueen(new SleepingQueenPosition(position.getSleepingQueenPosition().get().getCardIndex()));
+                    awokenQueen.ifPresent(queen -> awokenQueens.addQueen(queen));
+                }
             } else{
                 DrawingAndTrashPile drawingAndTrashPile = game.getdrawingAndTrashPile();
                 drawingAndTrashPile.discardAndDraw(pickedCardsList);
@@ -75,5 +82,12 @@ public class Player {
 
     public void setAwokenQueens(AwokenQueens awokenQueens) {
         this.awokenQueens = awokenQueens;
+    }
+
+    @Override
+    public void notify(GameState message) {
+        if(message.onTurn == playerIdx){
+
+        }
     }
 }

@@ -32,25 +32,23 @@ public class Game {
         gameState.sleepingQueens = sleepingQueenPositions;
 
         Map<HandPosition, Optional<Card>> cardsMap = new HashMap<>();
-        playerList.forEach(player -> {
-            List<Card> playersCards = player.getPlayersCards();
-           for(int i=0; i<playersCards.size(); i++){
-               HandPosition handPosition = new HandPosition(i, player.getPlayerIdx());
-               cardsMap.put(handPosition, Optional.of(playersCards.get(i)));
-           }
-        });
+        Player player = new Player(playerIdx, this);
+
+        List<Card> playersCards = player.getPlayersCards();
+        for(int i=0; i<playersCards.size(); i++){
+            HandPosition handPosition = new HandPosition(i, player.getPlayerIdx());
+            cardsMap.put(handPosition, Optional.of(playersCards.get(i)));
+        }
         gameState.cards = cardsMap;
 
         Map<AwokenQueenPosition, Queen> awokenQueenPositions = new HashMap<>();
-        playerList.forEach(player -> {
-            AwokenQueens aQPlayer = player.getAwokenQueens();
-            Map<Position, Queen> awokenQueensMap = aQPlayer.getQueens();
-            awokenQueensMap.forEach((position, queen) -> {
-                if(position.getAwokenQueenPosition().isPresent()){
-                    AwokenQueenPosition aQP = position.getAwokenQueenPosition().get();
-                    awokenQueenPositions.put(aQP, queen);
-                }
-            });
+        AwokenQueens aQPlayer = player.getAwokenQueens();
+        Map<Position, Queen> awokenQueensMap = aQPlayer.getQueens();
+        awokenQueensMap.forEach((position, queen) -> {
+            if(position.getAwokenQueenPosition().isPresent()){
+                AwokenQueenPosition aQP = position.getAwokenQueenPosition().get();
+                awokenQueenPositions.put(aQP, queen);
+            }
         });
 
         gameState.awokenQueens = awokenQueenPositions;
