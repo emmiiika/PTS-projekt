@@ -64,7 +64,7 @@ public class Player implements GameObserver{
         Object[] keys = queens.keySet().toArray();
         
         for(int i=0; i<queens.size(); i++){
-            awokenQueensMap.put(i, queens.get(keys[i]));
+            awokenQueensMap.put(i, queens.get(keys[i])); // REVIEW: keys.get(i)?
         }
 
         return new PlayerState(cardsMap, awokenQueensMap);

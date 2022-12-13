@@ -10,7 +10,7 @@ public class Game {
     private int onTurn;
 
     public Game(DrawingAndTrashPile dAndTPile){
-        this.playerList = playerList;
+        this.playerList = playerList; // REVIEW: this.playerList is never initialized
         this.dAndTPile = dAndTPile;
         this.sleepingQueens = new SleepingQueens();
         this.onTurn = 0;

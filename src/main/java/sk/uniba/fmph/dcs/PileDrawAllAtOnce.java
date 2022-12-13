@@ -13,7 +13,7 @@ public class PileDrawAllAtOnce implements DrawingPileType{
         if(drawingAndTrashPile.getRemainingCardsCount() < numberOfCards){
             List<Card> remainingCards = new ArrayList<>();
 
-            Collections.shuffle(drawingAndTrashPile.getTrashPile());
+            Collections.shuffle(drawingAndTrashPile.getTrashPile()); // REVIEW: this is not deterministic, how can you test it?
             drawingAndTrashPile.setDrawPile(drawingAndTrashPile.getTrashPile());
             drawingAndTrashPile.setTrashPile(new Stack<>());
 

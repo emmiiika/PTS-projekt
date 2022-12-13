@@ -29,7 +29,7 @@ class DrawingAndTrashPileTest {
 
     @BeforeEach
     void setUp() {
-        drawingAndTrashPile = new DrawingAndTrashPile();
+        drawingAndTrashPile = new DrawingAndTrashPile(); // REVIEW: mock DrawingPileType instance and give it to DrawingAndTrashPile
         discard = new ArrayList<>();
         discard.add(new Card(CardType.NUMBER, 1));
         discard.add(new Card(CardType.NUMBER, 2));

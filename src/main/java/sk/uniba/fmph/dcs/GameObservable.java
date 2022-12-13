@@ -31,7 +31,7 @@ public class GameObservable {
 
     public void notifyAll(GameState message){
         for(GameObserver observer: observers){
-            observer.notify(message);
+            observer.notify(message); // REVIEW: the message sent to different players observing the game is the same, but it should be different
         }
     }
 }

@@ -16,7 +16,7 @@ public class PileDrawRemaining implements DrawingPileType{
             numberOfCards--;
         }
         if(numberOfCards > 0){
-            Collections.shuffle(drawingAndTrashPile.getTrashPile());
+            Collections.shuffle(drawingAndTrashPile.getTrashPile()); // REVIEW: this is not deterministic, how can you test it?
             drawingAndTrashPile.setDrawPile(drawingAndTrashPile.getTrashPile());
             drawingAndTrashPile.setTrashPile(new Stack<>());
 

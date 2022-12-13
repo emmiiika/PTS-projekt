@@ -34,10 +34,10 @@ public class SleepingQueens implements QueenCollection{
 
     @Override
     public Optional<Queen> removeQueen(SleepingQueenPosition position) {
-        int index = position.getCardIndex();
+        int index = position.getCardIndex(); // REVIEW: duplicity of this function can be avoided by making QueenCollection an abstract class
         Optional<Queen> optional;
 
-        if(index < sleepingQueens.size()){
+        if(index < sleepingQueens.size()){ // REVIEW: this can be simplified to return Optional.ofNullable(sleepingQueens.remove(index));
             Queen queen = sleepingQueens.remove(index);
             optional = Optional.of(queen);
         }
