@@ -5,8 +5,8 @@ public class Card {
     public CardType type;
     public int value;
 
-    public Card(CardType type, int value){
+    public Card(CardType type, int value) {
         this.type = type;
-        this.value =  value;
+        this.value = value;
     }
 }

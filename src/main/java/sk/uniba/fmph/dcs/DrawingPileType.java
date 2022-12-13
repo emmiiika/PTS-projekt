@@ -1,7 +1,8 @@
 package sk.uniba.fmph.dcs;
 
 import java.util.List;
+import java.util.Random;
 
-public interface DrawingPileType {
-    public List<Card> deal(DrawingAndTrashPile drawingAndTrashPile, List<Card> discard);
+interface DrawingPileType {
+    public List<Card> deal(DrawingAndTrashPile drawingAndTrashPile, Random random, List<Card> discard);
 }

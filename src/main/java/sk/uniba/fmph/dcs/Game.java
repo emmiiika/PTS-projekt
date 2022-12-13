@@ -4,30 +4,28 @@ import java.util.*;
 
 public class Game {
 
+    private final DrawingAndTrashPile dAndTPile;
     private List<Player> playerList;
-    private DrawingAndTrashPile dAndTPile;
     private SleepingQueens sleepingQueens;
     private int onTurn;
 
-    public Game(DrawingAndTrashPile dAndTPile){
-        this.playerList = playerList; // REVIEW: this.playerList is never initialized
+    public Game(DrawingAndTrashPile dAndTPile) {
+        this.playerList = new ArrayList<>();
         this.dAndTPile = dAndTPile;
-        this.sleepingQueens = new SleepingQueens();
+        this.sleepingQueens = new SleepingQueens(new Random());
         this.onTurn = 0;
     }
 
-    public Optional<GameState> play(int playerIdx, List<Position> cards){
+    public Optional<GameState> play(int playerIdx, List<Position> cards) {
         GameState gameState = new GameState();
         gameState.numberOfPlayers = playerList.size();
-        gameState.onTurn = onTurn;
+        gameState.onTurn = playerIdx;
 
         Set<SleepingQueenPosition> sleepingQueenPositions = new HashSet<>();
         Map<Position, Queen> sleepingQueensMap = sleepingQueens.getQueens();
         sleepingQueensMap.forEach((position, queen) -> {
-            if(position.getSleepingQueenPosition().isPresent()){
-                SleepingQueenPosition sQP = position.getSleepingQueenPosition().get();
-                sleepingQueenPositions.add(sQP);
-            }
+            SleepingQueenPosition sQP = new SleepingQueenPosition(position.getCardIndex());
+            sleepingQueenPositions.add(sQP);
         });
         gameState.sleepingQueens = sleepingQueenPositions;
 
@@ -35,7 +33,7 @@ public class Game {
         Player player = playerList.get(playerIdx);
 
         List<Card> playersCards = player.getPlayersCards();
-        for(int i=0; i<playersCards.size(); i++){
+        for (int i = 0; i < playersCards.size(); i++) {
             HandPosition handPosition = new HandPosition(i, player.getPlayerIdx());
             cardsMap.put(handPosition, Optional.of(playersCards.get(i)));
         }
@@ -44,33 +42,28 @@ public class Game {
         Map<AwokenQueenPosition, Queen> awokenQueenPositions = new HashMap<>();
         AwokenQueens aQPlayer = player.getAwokenQueens();
         Map<Position, Queen> awokenQueensMap = aQPlayer.getQueens();
-        awokenQueensMap.forEach((position, queen) -> {
-            if(position.getAwokenQueenPosition().isPresent()){
-                AwokenQueenPosition aQP = position.getAwokenQueenPosition().get();
-                awokenQueenPositions.put(aQP, queen);
-            }
-        });
+        awokenQueensMap.forEach((position, queen) -> awokenQueenPositions.put((AwokenQueenPosition) position, queen));
 
         gameState.awokenQueens = awokenQueenPositions;
-
-        // nie som si tymto ista
         gameState.cardsDiscardedLastTurn = dAndTPile.getCardsDiscardedThisTurn();
 
 
         return Optional.of(gameState);
-    }    
+    }
 
-    public List<Player> getPlayersList(){
+    public List<Player> getPlayersList() {
         return playerList;
     }
-    public void setPlayerList(List<Player> playerList){
+
+    public void setPlayerList(List<Player> playerList) {
         this.playerList = playerList;
     }
 
-    public int playerOnTurn(){
+    public int playerOnTurn() {
         return onTurn;
     }
-    public SleepingQueens getSleepingQueens(){
+
+    public SleepingQueens getSleepingQueens() {
         return sleepingQueens;
     }
 
@@ -78,7 +71,7 @@ public class Game {
         return dAndTPile;
     }
 
-    public Optional<Integer> isFinished(GameFinishedStrategy gameFinishedStrategy){
+    public Optional<Integer> isFinished(GameFinishedStrategy gameFinishedStrategy) {
         return gameFinishedStrategy.isFinished();
     }
 }

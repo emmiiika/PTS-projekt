@@ -11,7 +11,7 @@ public class Main {
         System.out.println("Who's gonna start?");
         String player = scanner.nextLine();
 
-        while(gameAdaptor.isFinished().isEmpty()) {
+        while (gameAdaptor.isFinished().isEmpty()) {
             System.out.println("What do you want to play?");
             String cards = scanner.nextLine();
 

@@ -2,22 +2,22 @@ package sk.uniba.fmph.dcs;
 
 import java.util.*;
 
-public class GameAdaptor implements GamePlayerInterface{
+public class GameAdaptor implements GamePlayerInterface {
 
-    private Map<String, Integer> players;
     int lastPlayerIdx;
+    private Map<String, Integer> players;
     private Game game;
     private List<Player> playerList;
     private DrawingPileType drawingPileType;
     private DrawingAndTrashPile drawingAndTrashPile;
 
-    public GameAdaptor(DrawingPileType drawingPileType){
+    public GameAdaptor(DrawingPileType drawingPileType) {
         Scanner scanner = new Scanner(System.in);
 
         this.players = new HashMap<>();
         this.lastPlayerIdx = 0;
         this.drawingPileType = drawingPileType;
-        this.drawingAndTrashPile = new DrawingAndTrashPile(drawingPileType);
+        this.drawingAndTrashPile = new DrawingAndTrashPile(drawingPileType, new Random());
         this.game = new Game(drawingAndTrashPile);
         System.out.println("New has game started.");
 
@@ -26,7 +26,7 @@ public class GameAdaptor implements GamePlayerInterface{
         this.playerList = new ArrayList<>(numberOfPlayers);
 
         int i = 0;
-        while(i != numberOfPlayers) {
+        while (i != numberOfPlayers) {
             System.out.println("Insert players name:");
             String username = scanner.nextLine();
             if (players.containsKey(username)) {
@@ -41,6 +41,7 @@ public class GameAdaptor implements GamePlayerInterface{
             game.setPlayerList(playerList);
         }
     }
+
     @Override
     public String play(String player, String cards) {
         String[] cardsSplit = cards.split(" ");
@@ -54,13 +55,12 @@ public class GameAdaptor implements GamePlayerInterface{
 
         List<Position> positions = new ArrayList<>();
         List<HandPosition> handPos = new ArrayList<>();
-        for(int i=1; i<cardPlayed.length(); i++){
+        for (int i = 1; i < cardPlayed.length(); i++) {
             int cardIdx = Character.getNumericValue(cardPlayed.charAt(i));
             HandPosition handPosition = new HandPosition(cardIdx, playerIdx);
             handPos.add(handPosition);
 
-            Position position = new Position(handPosition);
-            positions.add(position);
+            positions.add(handPosition);
         }
 
         playerList.get(playerIdx).play(handPos);
@@ -74,7 +74,7 @@ public class GameAdaptor implements GamePlayerInterface{
         stringBuilder.append("On turn: ").append(players.get(gameState.onTurn)).append("\n");
 
         stringBuilder.append("Sleeping queens: ");
-        for(SleepingQueenPosition sleepingQueenPosition: gameState.sleepingQueens){
+        for (SleepingQueenPosition sleepingQueenPosition : gameState.sleepingQueens) {
             stringBuilder.append(sleepingQueenPosition.getCardIndex()).append(", ");
         }
         stringBuilder.append("\n");
@@ -84,7 +84,7 @@ public class GameAdaptor implements GamePlayerInterface{
         List<Card> playersCards = playerList.get(playerIdx).getPlayersCards();
 //        stringBuilder.append(playersCards).append("\n");
 //        Set<HandPosition> handPositions = gameState.cards.keySet();
-        for(int i=0; i<playersCards.size(); i++){
+        for (int i = 0; i < playersCards.size(); i++) {
             Card card = playersCards.get(i);
             stringBuilder.append(i).append(": ");
             stringBuilder.append(card.type).append("(");
@@ -95,7 +95,7 @@ public class GameAdaptor implements GamePlayerInterface{
 
         stringBuilder.append("Awoken queens: ");//.append(gameState.awokenQueens).append("\n");
         Set<AwokenQueenPosition> awokenQueenPositions = gameState.awokenQueens.keySet();
-        for(AwokenQueenPosition awokenQueenPosition: awokenQueenPositions){
+        for (AwokenQueenPosition awokenQueenPosition : awokenQueenPositions) {
             stringBuilder.append(awokenQueenPosition.getCardIndex()).append(", ");
         }
         stringBuilder.append("\n");
@@ -104,20 +104,18 @@ public class GameAdaptor implements GamePlayerInterface{
         return stringBuilder.toString();
     }
 
-    public Optional<Integer> isFinished(){
+    public Optional<Integer> isFinished() {
         GameFinishedPlayers gameFinishedPlayers = new GameFinishedPlayers(game);
         GameFinishedNoQueensLeft gameFinishedNoQueensLeft = new GameFinishedNoQueensLeft(game);
 
         Optional<Integer> playersStrategy = game.isFinished(gameFinishedPlayers);
         Optional<Integer> queenStrategy = game.isFinished(gameFinishedNoQueensLeft);
 
-        if(playersStrategy.isPresent()){
+        if (playersStrategy.isPresent()) {
             return playersStrategy;
-        }
-        else if(queenStrategy.isPresent()) {
+        } else if (queenStrategy.isPresent()) {
             return queenStrategy;
-        }
-        else return Optional.empty();
+        } else return Optional.empty();
     }
 }
 

@@ -1,19 +1,21 @@
 package sk.uniba.fmph.dcs;
 
-public class HandPosition {
-    private int cardIndex;
-    private int playerIdx;
+public class HandPosition implements Position {
+    private final int cardIdx;
+    private final int playerIdx;
 
-    public HandPosition(int cardIndex, int playerIdx){
-        this.cardIndex = cardIndex;
+    public HandPosition(int cardIdx, int playerIdx) {
+        this.cardIdx = cardIdx;
         this.playerIdx = playerIdx;
     }
 
-    public int getCardIndex(){
-        return cardIndex;
+    @Override
+    public int getCardIndex() {
+        return cardIdx;
     }
 
-    public int getPlayerIndex(){
+    @Override
+    public int getPlayerIndex() {
         return playerIdx;
     }
 }

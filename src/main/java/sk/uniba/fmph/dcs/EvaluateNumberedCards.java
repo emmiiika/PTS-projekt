@@ -3,15 +3,13 @@ package sk.uniba.fmph.dcs;
 import java.util.List;
 
 public class EvaluateNumberedCards {
-    public boolean play(List<Card> cards){
+    public boolean play(List<Card> cards) {
         int n = cards.size();
-        if(n == 1){
+        if (n == 1) {
             return true;
-        }
-        else if(n == 2){
+        } else if (n == 2) {
             return cards.get(0) == cards.get(1);
-        }
-        else {
+        } else {
             Card cardWithGreatestValue = new Card(CardType.NUMBER, 1);
             for (Card card : cards) {
                 if (card.value > cardWithGreatestValue.value) {

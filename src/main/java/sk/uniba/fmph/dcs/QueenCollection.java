@@ -1,14 +1,24 @@
 package sk.uniba.fmph.dcs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public interface QueenCollection {
-    public void addQueen(Queen queen);
-    public Optional<Queen> removeQueen(SleepingQueenPosition position);
-    public Optional<Queen> removeQueen(AwokenQueenPosition position);
-    public Map<Position, Queen> getQueens();
+public abstract class QueenCollection {
+
+    List<Queen> queens;
+
+    public void addQueen(Queen queen) {
+        queens.add(queen);
+    }
+
+    ;
+
+    public Optional<Queen> removeQueen(Position position) {
+        return Optional.ofNullable(queens.remove(position.getCardIndex()));
+    }
+
+    ;
+
+    public abstract Map<Position, Queen> getQueens();
 }

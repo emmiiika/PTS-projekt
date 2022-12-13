@@ -1,79 +1,83 @@
 package sk.uniba.fmph.dcs;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-public class Player implements GameObserver{
+public class Player implements GameObserver {
 
     private int playerIdx;
     private Hand playersHand;
     private AwokenQueens awokenQueens;
     private Game game;
 
-    public Player(int playerIdx, Game game){
+    public Player(int playerIdx, Game game) {
         this.playerIdx = playerIdx;
         this.playersHand = new Hand(playerIdx, game.getdrawingAndTrashPile());
         this.awokenQueens = new AwokenQueens(playerIdx);
         this.game = game;
     }
 
-    public void play(List<HandPosition> cards){
+    public void play(List<HandPosition> cards) {
         Optional<List<Card>> pickedCards = playersHand.pickCards(cards);
 
-        if(pickedCards.isPresent()){
+        if (pickedCards.isPresent()) {
             List<Card> pickedCardsList = pickedCards.get();
-            if(playersHand.areAllNumbered(pickedCardsList)){
+
+            // picked cards are all nums
+            if (playersHand.areAllNumbered(pickedCardsList)) {
                 EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
                 boolean success = evaluateNumberedCards.play(pickedCardsList);
 
-                if(success){
-                        playersHand.removePickedCardsAndRedraw();
-                }
-                else {
+                if (success) {
+                    playersHand.removePickedCardsAndRedraw();
+                } else {
                     playersHand.returnPickedCards();
                 }
-            } else if (pickedCards.get().get(0).type == CardType.KING) {
+            }
+            // picked card is KING
+            else if (pickedCards.get().get(0).type == CardType.KING) {
                 SleepingQueens sleepingQueens = game.getSleepingQueens();
                 Map<Position, Queen> sq = sleepingQueens.getQueens();
-                Position position = sq.keySet().iterator().next();
+                Position sleepingQueenPosition = sq.keySet().iterator().next();
 
-                if(position.getSleepingQueenPosition().isPresent()) {
-                    Optional<Queen> awokenQueen = sleepingQueens.removeQueen(new SleepingQueenPosition(position.getSleepingQueenPosition().get().getCardIndex()));
+                if (sleepingQueenPosition != null) {
+                    Optional<Queen> awokenQueen = sleepingQueens.removeQueen(new SleepingQueenPosition(sleepingQueenPosition.getCardIndex()));
                     awokenQueen.ifPresent(queen -> awokenQueens.addQueen(queen));
                 }
-            } else{
+            }
+            // picked card is KNIGHT OR SLEEPINGPOTION
+            else {
                 DrawingAndTrashPile drawingAndTrashPile = game.getdrawingAndTrashPile();
                 drawingAndTrashPile.discardAndDraw(pickedCardsList);
-                EvaluateAttack evaluateAttack = new EvaluateAttack(game);
+                EvaluateAttack evaluateAttack = new EvaluateAttack(game, pickedCards.get().get(0).type);
+//                evaluateAttack.play();
             }
         }
     }
 
-    public PlayerState getPlayerState(){
+    public PlayerState getPlayerState() {
         List<Card> cards = playersHand.getCards();
         Map<Integer, Optional<Card>> cardsMap = new HashMap<>();
-        for(int i=0; i<cards.size(); i++){
+        for (int i = 0; i < cards.size(); i++) {
             cardsMap.put(i, Optional.of(cards.get(i)));
         }
 
-        // neviem ci a ako to funguje ale povedzme
         Map<Position, Queen> queens = awokenQueens.getQueens();
-        Map<Integer,Queen> awokenQueensMap = new HashMap<>();
-        Object[] keys = queens.keySet().toArray();
-        
-        for(int i=0; i<queens.size(); i++){
-            awokenQueensMap.put(i, queens.get(keys[i])); // REVIEW: keys.get(i)?
+        Map<Integer, Queen> awokenQueensMap = new HashMap<>();
+        Set<Position> keys = queens.keySet();
+
+        int i = 0;
+        for (Position position : keys) {
+            awokenQueensMap.put(i++, queens.get(position));
         }
 
         return new PlayerState(cardsMap, awokenQueensMap);
     }
 
-    public List<Card> getPlayersCards(){
+    public List<Card> getPlayersCards() {
         return playersHand.getCards();
     }
-    public int getPlayerIdx(){
+
+    public int getPlayerIdx() {
         return playerIdx;
     }
 
@@ -87,8 +91,14 @@ public class Player implements GameObserver{
 
     @Override
     public void notify(GameState message) {
-        if(message.onTurn == playerIdx){
+        if (message.onTurn == playerIdx) {
+            StringBuilder sb = new StringBuilder();
 
+            Map<AwokenQueenPosition, Queen> aQueens = message.awokenQueens;
+            Map<HandPosition, Optional<Card>> cards = message.cards;
+            int numberOfPlayers = message.numberOfPlayers;
+            Set<SleepingQueenPosition> sQueens = message.sleepingQueens;
+            List<Card> cardsDiscardedLT = message.cardsDiscardedLastTurn;
         }
     }
 }

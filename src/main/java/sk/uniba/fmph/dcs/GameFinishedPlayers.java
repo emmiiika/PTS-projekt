@@ -1,16 +1,17 @@
 package sk.uniba.fmph.dcs;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class GameFinishedPlayers implements GameFinishedStrategy{
+public class GameFinishedPlayers implements GameFinishedStrategy {
 
     private final Game game;
-    public GameFinishedPlayers(Game game){
+
+    public GameFinishedPlayers(Game game) {
         this.game = game;
     }
+
     @Override
     public Optional<Integer> isFinished() {
 
@@ -18,13 +19,12 @@ public class GameFinishedPlayers implements GameFinishedStrategy{
         int playerOnTurn = game.playerOnTurn();
         Player player = players.get(playerOnTurn);
 
-        if(players.size() == 2 || players.size() == 3){
+        if (players.size() == 2 || players.size() == 3) {
             AwokenQueens awokenQueens = player.getAwokenQueens();
 
-            if(awokenQueens.getQueens().size() == 5){
+            if (awokenQueens.getQueens().size() == 5) {
                 return Optional.of(playerOnTurn);
-            }
-            else {
+            } else {
                 int sum = 0;
 
                 Map<Position, Queen> awokenQueensMap = player.getAwokenQueens().getQueens();
@@ -39,14 +39,12 @@ public class GameFinishedPlayers implements GameFinishedStrategy{
                     return Optional.empty();
                 }
             }
-        }
-        else {
+        } else {
             AwokenQueens awokenQueens = player.getAwokenQueens();
 
-            if(awokenQueens.getQueens().size() == 4){
+            if (awokenQueens.getQueens().size() == 4) {
                 return Optional.of(playerOnTurn);
-            }
-            else {
+            } else {
                 int sum = 0;
 
                 Map<Position, Queen> awokenQueensMap = player.getAwokenQueens().getQueens();
