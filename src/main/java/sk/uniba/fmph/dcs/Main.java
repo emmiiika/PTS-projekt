@@ -1,5 +1,6 @@
 package sk.uniba.fmph.dcs;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -12,10 +13,23 @@ public class Main {
         String player = scanner.nextLine();
 
         while (gameAdaptor.isFinished().isEmpty()) {
-            System.out.println("What do you want to play?");
-            String cards = scanner.nextLine();
+            List<Card> cards = gameAdaptor.getPlayersCards();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Your cards: ");
+            for (int i = 0; i < cards.size(); i++) {
+                Card card = cards.get(i);
+                stringBuilder.append(i).append(": ");
+                stringBuilder.append(card.type).append("(");
+                stringBuilder.append(card.value).append(")");
+                stringBuilder.append(", ");
+            }
+            stringBuilder.append("\n");
+            System.out.println(stringBuilder);
 
-            System.out.println(gameAdaptor.play(player, cards));
+            System.out.println("What do you want to play?");
+            String karty = scanner.nextLine();
+
+            System.out.println(gameAdaptor.play(player, karty));
         }
     }
 }

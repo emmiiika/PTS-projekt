@@ -17,12 +17,14 @@ public class Hand {
         this.drawingAndTrashPile = drawingAndTrashPile;
     }
 
-    public Optional<List<Card>> pickCards(List<HandPosition> positions) {
-        for (HandPosition position : positions) {
-            if (position.getPlayerIndex() == playerIdx && position.getCardIndex() < cardsOnHand.size()) {
-                pickedCards.add(cardsOnHand.get(position.getCardIndex()));
-            } else {
-                return Optional.empty();
+    public Optional<List<Card>> pickCards(List<Position> positions) {
+        for (Position position : positions) {
+            if(position instanceof HandPosition) {
+                if (position.getPlayerIndex() == playerIdx && position.getCardIndex() < cardsOnHand.size()) {
+                    pickedCards.add(cardsOnHand.get(position.getCardIndex()));
+                } else {
+                    return Optional.empty();
+                }
             }
         }
         return Optional.of(pickedCards);
@@ -30,6 +32,8 @@ public class Hand {
 
     public Map<HandPosition, Card> removePickedCardsAndRedraw() {
         cardsOnHand.removeAll(pickedCards);
+        System.out.println(pickedCards.size());
+        System.out.println(cardsOnHand.size());
         int n = pickedCards.size();
 
         List<Card> newCards = drawingAndTrashPile.discardAndDraw(pickedCards);

@@ -23,7 +23,8 @@ public class EvaluateAttack {
         }
     }
 
-    public boolean play(Position targetQueen, int targetPlayerIdx) {
+    public boolean play(Position targetQueen) {
+        int targetPlayerIdx = targetQueen.getPlayerIndex();
         List<Card> playersCards = game.getPlayersList().get(targetPlayerIdx).getPlayersCards();
 
         for (Card card : playersCards) {

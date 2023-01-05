@@ -16,12 +16,12 @@ public class Player implements GameObserver {
         this.game = game;
     }
 
-    public void play(List<HandPosition> cards) {
+    public void play(List<Position> cards) {
         Optional<List<Card>> pickedCards = playersHand.pickCards(cards);
-
+        System.out.println(pickedCards.isPresent());
         if (pickedCards.isPresent()) {
             List<Card> pickedCardsList = pickedCards.get();
-
+            System.out.println(pickedCardsList.get(0).value);
             // picked cards are all nums
             if (playersHand.areAllNumbered(pickedCardsList)) {
                 EvaluateNumberedCards evaluateNumberedCards = new EvaluateNumberedCards();
@@ -46,10 +46,14 @@ public class Player implements GameObserver {
             }
             // picked card is KNIGHT OR SLEEPINGPOTION
             else {
-                DrawingAndTrashPile drawingAndTrashPile = game.getdrawingAndTrashPile();
-                drawingAndTrashPile.discardAndDraw(pickedCardsList);
-                EvaluateAttack evaluateAttack = new EvaluateAttack(game, pickedCards.get().get(0).type);
-//                evaluateAttack.play();
+                for(Position cardPosition: cards){
+                    if(cardPosition instanceof AwokenQueenPosition){
+                        DrawingAndTrashPile drawingAndTrashPile = game.getdrawingAndTrashPile();
+                        drawingAndTrashPile.discardAndDraw(pickedCardsList);
+                        EvaluateAttack evaluateAttack = new EvaluateAttack(game, pickedCards.get().get(0).type);
+                        evaluateAttack.play(cardPosition);
+                    }
+                }
             }
         }
     }
@@ -92,13 +96,6 @@ public class Player implements GameObserver {
     @Override
     public void notify(GameState message) {
         if (message.onTurn == playerIdx) {
-            StringBuilder sb = new StringBuilder();
-
-            Map<AwokenQueenPosition, Queen> aQueens = message.awokenQueens;
-            Map<HandPosition, Optional<Card>> cards = message.cards;
-            int numberOfPlayers = message.numberOfPlayers;
-            Set<SleepingQueenPosition> sQueens = message.sleepingQueens;
-            List<Card> cardsDiscardedLT = message.cardsDiscardedLastTurn;
         }
     }
 }

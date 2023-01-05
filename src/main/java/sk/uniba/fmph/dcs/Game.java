@@ -19,7 +19,7 @@ public class Game {
     public Optional<GameState> play(int playerIdx, List<Position> cards) {
         GameState gameState = new GameState();
         gameState.numberOfPlayers = playerList.size();
-        gameState.onTurn = playerIdx;
+//        gameState.onTurn = playerIdx;
 
         Set<SleepingQueenPosition> sleepingQueenPositions = new HashSet<>();
         Map<Position, Queen> sleepingQueensMap = sleepingQueens.getQueens();
@@ -31,6 +31,7 @@ public class Game {
 
         Map<HandPosition, Optional<Card>> cardsMap = new HashMap<>();
         Player player = playerList.get(playerIdx);
+        player.play(cards);
 
         List<Card> playersCards = player.getPlayersCards();
         for (int i = 0; i < playersCards.size(); i++) {
@@ -48,6 +49,7 @@ public class Game {
         gameState.cardsDiscardedLastTurn = dAndTPile.getCardsDiscardedThisTurn();
 
 
+        this.onTurn = (this.onTurn + 1) % getPlayersList().size();
         return Optional.of(gameState);
     }
 

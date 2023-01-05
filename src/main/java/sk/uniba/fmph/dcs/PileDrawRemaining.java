@@ -11,7 +11,7 @@ public class PileDrawRemaining implements DrawingPileType {
         drawingAndTrashPile.getTrashPile().addAll(discard);
 
 
-        while (drawingAndTrashPile.getRemainingCardsCount() > 0) {
+        while (drawingAndTrashPile.getRemainingCardsCount() > 0 && numberOfCards > 0) {
             cards.add(drawingAndTrashPile.drawOne());
             numberOfCards--;
         }

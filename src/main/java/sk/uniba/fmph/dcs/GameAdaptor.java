@@ -44,32 +44,34 @@ public class GameAdaptor implements GamePlayerInterface {
 
     @Override
     public String play(String player, String cards) {
-        String[] cardsSplit = cards.split(" ");
-//        System.out.println(Arrays.toString(cardsSplit));
-        List<String> commands = new ArrayList<>();
-        commands.addAll(Arrays.asList(cardsSplit));
-
-        String cardPlayed = commands.get(0);
+//        String[] cardsSplit = cards.split(" ");
+////        System.out.println(Arrays.toString(cardsSplit));
+//        List<String> commands = new ArrayList<>();
+//        commands.addAll(Arrays.asList(cardsSplit));
+//
+//        String cardPlayed = commands.get(0);
 
         int playerIdx = players.get(player);
 
-        List<Position> positions = new ArrayList<>();
-        List<HandPosition> handPos = new ArrayList<>();
-        for (int i = 1; i < cardPlayed.length(); i++) {
-            int cardIdx = Character.getNumericValue(cardPlayed.charAt(i));
-            HandPosition handPosition = new HandPosition(cardIdx, playerIdx);
-            handPos.add(handPosition);
+//        List<Position> positions = new ArrayList<>();
+//        List<HandPosition> handPos = new ArrayList<>();
+//        for (int i = 1; i < cardPlayed.length(); i++) {
+//            int cardIdx = Character.getNumericValue(cardPlayed.charAt(i));
+//            HandPosition handPosition = new HandPosition(cardIdx, playerIdx);
+//            handPos.add(handPosition);
+//
+//            positions.add(handPosition);
+//        }
 
-            positions.add(handPosition);
-        }
-
-        playerList.get(playerIdx).play(handPos);
+//        playerList.get(playerIdx).play(handPos);
+        List<Position> positions = parser(playerIdx, cards);
 
         Optional<GameState> gameStateOptional = game.play(playerIdx, positions);
         StringBuilder stringBuilder = new StringBuilder();
 
         assert gameStateOptional.isPresent();
         GameState gameState = gameStateOptional.get();
+        gameState.onTurn = playerIdx;
         stringBuilder.append("Number of players: ").append(gameState.numberOfPlayers).append("\n");
         stringBuilder.append("On turn: ").append(players.get(gameState.onTurn)).append("\n");
 
@@ -80,18 +82,18 @@ public class GameAdaptor implements GamePlayerInterface {
         stringBuilder.append("\n");
 
 
-        stringBuilder.append("Your cards: ");
-        List<Card> playersCards = playerList.get(playerIdx).getPlayersCards();
-//        stringBuilder.append(playersCards).append("\n");
-//        Set<HandPosition> handPositions = gameState.cards.keySet();
-        for (int i = 0; i < playersCards.size(); i++) {
-            Card card = playersCards.get(i);
-            stringBuilder.append(i).append(": ");
-            stringBuilder.append(card.type).append("(");
-            stringBuilder.append(card.value).append(")");
-            stringBuilder.append(", ");
-        }
-        stringBuilder.append("\n");
+//        stringBuilder.append("Your cards: ");
+//        List<Card> playersCards = playerList.get(playerIdx).getPlayersCards();
+////        stringBuilder.append(playersCards).append("\n");
+////        Set<HandPosition> handPositions = gameState.cards.keySet();
+//        for (int i = 0; i < playersCards.size(); i++) {
+//            Card card = playersCards.get(i);
+//            stringBuilder.append(i).append(": ");
+//            stringBuilder.append(card.type).append("(");
+//            stringBuilder.append(card.value).append(")");
+//            stringBuilder.append(", ");
+//        }
+//        stringBuilder.append("\n");
 
         stringBuilder.append("Awoken queens: ");//.append(gameState.awokenQueens).append("\n");
         Set<AwokenQueenPosition> awokenQueenPositions = gameState.awokenQueens.keySet();
@@ -116,6 +118,39 @@ public class GameAdaptor implements GamePlayerInterface {
         } else if (queenStrategy.isPresent()) {
             return queenStrategy;
         } else return Optional.empty();
+    }
+
+    public List<Card> getPlayersCards(){
+        return game.getPlayersList().get(game.playerOnTurn()).getPlayersCards();
+    }
+
+    private List<Position> parser(int playerIdx, String command){
+        List<Position> positions = new ArrayList<>();
+        command = command.toLowerCase().strip();
+        String[] commands = command.split(" ");
+        if(commands.length > 0){
+            if(commands[0].charAt(0) != 'h'){
+                throw new IllegalArgumentException();
+            }
+            for(int i=1; i<commands[0].length(); i++){
+                positions.add(new HandPosition(Integer.parseInt(Character.toString(commands[0].charAt(i))), playerIdx));
+            }
+
+            if(commands.length == 2){
+                if(commands[1].charAt(0) == 'a'){
+                    int targetPlayerIdx = Integer.parseInt(Character.toString(commands[1].charAt(1)));
+                    int targetIdx = Integer.parseInt(Character.toString(commands[1].charAt(2)));
+                    Position targetAwokenQueen = new AwokenQueenPosition(targetIdx, targetPlayerIdx);
+                    positions.add(targetAwokenQueen);
+                }
+                else if(commands[1].charAt(0) == 's'){
+                    Position targetSleepingQueen = new SleepingQueenPosition(Integer.parseInt(Character.toString(commands[1].charAt(1))));
+                    positions.add(targetSleepingQueen);
+                }
+            }
+        }
+
+        return positions;
     }
 }
 
